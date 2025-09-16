@@ -1,0 +1,140 @@
+{
+  "cwd": "C:/DEV/sds-sfd/src/main/resources",
+  "items": [
+    {
+      "label": "=> Quarto: render index.qmd - HTML",
+      "command": "quarto render index.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "==============================================================",
+      "command": "",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesTRANS/ Notes de Deploiement - HTML",
+      "command": "quarto render ./filesTRANS/SFD-CID-SDS-BS-bGENE-notesDeploiement.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesTRANS/ R&C - HTML",
+      "command": "quarto render ./filesTRANS/SFD-CID-SDS-BS-bGENE-RetC.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "==============================================================",
+      "command": "",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT01/ - HTML",
+      "command": "quarto render ./filesLOT01/*.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT01/ Création du mesg IE518 - HTML",
+      "command": "quarto render ./filesLOT01/SFD-CID-SDS-VN-BS-bLOT01-Annexe03e-IE518.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "==============================================================",
+      "command": "",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT07/ - HTML",
+      "command": "quarto render ./filesLOT07/*.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT07/ Création du mesg IE191 - HTML",
+      "command": "quarto render ./filesLOT07/SFD-CID-SDS-TRANSIT-bLOT07-Annexe01a-IE191.qmd --to html",
+      "file": "filesLOT07\\SFD-CID-SDS-TRANSIT-bLOT07-Annexe01a-IE191.qmd"
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT07/ Introduction Transit - HTML",
+      "command": "quarto render ./filesLOT07/SFD-CID-SDS-TRANSIT-bLOT07-IntroductionAUTransit.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT07/ UC70 - Tansition Nominale - HTML",
+      "command": "quarto render ./filesLOT07/SFD-CID-SDS-TRANSIT-bLOT07-UC70-TransitionNominale.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT07/ UC72 - Invalidation - HTML",
+      "command": "quarto render ./filesLOT07/SFD-CID-SDS-TRANSIT-bLOT07-UC72-invalidation.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT07/ UC74 - Rectification - HTML",
+      "command": "quarto render ./filesLOT07/SFD-CID-SDS-TRANSIT-bLOT07-UC74-Rectification.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT07/ UC76 - Résultat de Sortie - HTML",
+      "command": "quarto render ./filesLOT07/SFD-CID-SDS-TRANSIT-bLOT07-UC76-ResultatDeSortie.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "==============================================================",
+      "command": "",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT01/ - PDF",
+      "command": "quarto render ./filesLOT01/*.qmd --to pdf",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT02/ - PDF",
+      "command": "quarto render ./filesLOT02/*.qmd --to pdf",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT03/ - PDF",
+      "command": "quarto render ./filesLOT03/*.qmd --to pdf",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./filesLOT04/ - PDF",
+      "command": "quarto render ./filesLOT04/*.qmd --to pdf",
+      "file": null
+    },
+    {
+      "label": "==============================================================",
+      "command": "",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./resources/livraisons/ FV-Livraison-liste - HTML",
+      "command": "quarto render ./resources/livraisons/FV-Livraison-liste.qmd --to html",
+      "file": null
+    },
+    {
+      "label": "=> Quarto: render ./resources/livraisons/ FV-Livraison-v0.6-016 - PDF",
+      "command": "quarto render ./resources/livraisons/FV-Livraison-v0.6-016.qmd --to pdf",
+      "file": "./resources/livraisons/FV-Livraison-v0.6-016.qmd"
+    },
+    {
+      "label": "=> Quarto: render ./resources/livraisons/ FV-Livraison-v0.6-019 - PDF",
+      "command": "quarto render ./resources/livraisons/FV-Livraison-v0.6-019.qmd --to pdf",
+      "file": "./resources/livraisons/FV-Livraison-v0.6-019.qmd"
+    },
+    {
+      "label": "==============================================================",
+      "command": "",
+      "file": null
+    },
+    {
+      "label": "=> Lister fichiers",
+      "command": "Get-ChildItem",
+      "file": "_quarto.yml"
+    },
+    {
+      "label": "==============================================================",
+      "command": "",
+      "file": null
+    }
+  ]
+}
