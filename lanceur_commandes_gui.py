@@ -140,6 +140,7 @@ class App(ttk.Frame):
         self.model = model
         self.runner = PSRunner(self.append_output, self.on_process_exit)
         self.prog_running = False
+        self._opened_file_path: Path | None = None
         self._build_ui()
         self._set_output_file(None)
         self._refresh_list()
@@ -210,6 +211,13 @@ class App(ttk.Frame):
         self.output_file_var = tk.StringVar(value="")
         self.output_file_label = ttk.Label(self.output_toolbar, textvariable=self.output_file_var)
         self.output_file_label.pack(side="left", padx=(4,0))
+        self.save_file_btn = ttk.Button(
+            self.output_toolbar,
+            text="Enregistrer",
+            command=self.save_opened_output_file,
+            state="disabled",
+        )
+        self.save_file_btn.pack(side="right")
         text_container = ttk.Frame(right)
         text_container.pack(fill="both", expand=True)
 
@@ -278,6 +286,7 @@ class App(ttk.Frame):
         filemenu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Fichier", menu=filemenu)
         filemenu.add_command(label="Enregistrer", command=self.save)
+        filemenu.add_command(label="Enregistrer le fichier ouvert", command=self.save_opened_output_file)
         filemenu.add_command(label="Quitter", command=root.destroy)
         helpmenu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Aide", menu=helpmenu)
@@ -456,10 +465,14 @@ class App(ttk.Frame):
 
     def _set_output_file(self, path: Path | str | None):
         if path:
-            name = Path(path).name
-            self.output_file_var.set(name)
+            resolved = Path(path)
+            self._opened_file_path = resolved
+            self.output_file_var.set(resolved.name)
+            self.save_file_btn.config(state="normal")
         else:
+            self._opened_file_path = None
             self.output_file_var.set("—")
+            self.save_file_btn.config(state="disabled")
 
     def append_output(self, text):
         self.text.insert(tk.END, text)
@@ -536,6 +549,18 @@ class App(ttk.Frame):
         self.model.cwd = self.cwd_var.get() or None
         self.model.save()
         self.set_status("Enregistré ✔")
+
+    def save_opened_output_file(self):
+        if not self._opened_file_path:
+            messagebox.showinfo(APP_TITLE, "Aucun fichier ouvert à enregistrer.")
+            return
+        content = self.text.get("1.0", "end-1c")
+        try:
+            self._opened_file_path.write_text(content, encoding="utf-8")
+        except Exception as e:
+            messagebox.showerror(APP_TITLE, f"Impossible d'enregistrer le fichier: {e}")
+            return
+        self.set_status(f"Fichier enregistré: {self._opened_file_path}")
 
     def _selected_index(self):
         try:
