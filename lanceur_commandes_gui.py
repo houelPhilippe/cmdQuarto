@@ -203,8 +203,32 @@ class App(ttk.Frame):
         # Zone Sortie
         right = ttk.Frame(paned)
         ttk.Label(right, text="Sortie").pack(anchor="w")
-        self.text = tk.Text(right, wrap="word", height=16, font=("Courier New", 10))
-        self.text.pack(fill="both", expand=True)
+        text_container = ttk.Frame(right)
+        text_container.pack(fill="both", expand=True)
+
+        self.line_numbers = tk.Text(
+            text_container,
+            width=4,
+            padx=6,
+            takefocus=0,
+            borderwidth=0,
+            highlightthickness=0,
+            font=("Courier New", 10),
+            state="disabled",
+            wrap="none",
+        )
+        self.line_numbers.pack(side="left", fill="y")
+
+        self.text = tk.Text(text_container, wrap="word", height=16, font=("Courier New", 10))
+        self.text.pack(side="left", fill="both", expand=True)
+        self.text.bind("<<Modified>>", self._on_text_modified)
+        self.text.config(yscrollcommand=self._sync_text_scroll)
+        self.line_numbers.config(background=self.text.cget("background"), foreground="#777777", cursor="arrow")
+        self.line_numbers.bind("<MouseWheel>", self._on_line_numbers_mousewheel)
+        self.line_numbers.bind("<Button-4>", self._on_line_numbers_mousewheel)
+        self.line_numbers.bind("<Button-5>", self._on_line_numbers_mousewheel)
+        self._update_line_numbers()
+        self.text.edit_modified(False)
 
         # --- Styles de coloration Markdown/Quarto
         # Choix de couleurs qui passent en thème clair/sombre
@@ -388,15 +412,34 @@ class App(ttk.Frame):
             self.listbox.insert(tk.END, item.label + suffix)
         if self.model.items:
             self.listbox.select_set(0)
-        # Numérotation des lignes dans la liste des commandes
-        count = self.listbox.size()
-        width = len(str(count)) if count else 1
-        for idx in range(count):
-            text = self.listbox.get(idx)
-            # Retirer une éventuelle numérotation existante
-            text = re.sub(r"^\s*\d+\.\s+", "", text)
-            self.listbox.delete(idx)
-            self.listbox.insert(idx, f"{idx+1:>{width}}. {text}")
+
+    def _sync_text_scroll(self, first, last):
+        """Keep the line number panel aligned with the text widget."""
+        self.line_numbers.yview_moveto(first)
+
+    def _on_text_modified(self, _event=None):
+        if self.text.edit_modified():
+            self.text.edit_modified(False)
+            self._update_line_numbers()
+
+    def _on_line_numbers_mousewheel(self, event):
+        direction = 0
+        if getattr(event, "num", None) == 4 or getattr(event, "delta", 0) > 0:
+            direction = -1
+        elif getattr(event, "num", None) == 5 or getattr(event, "delta", 0) < 0:
+            direction = 1
+        if direction:
+            self.text.yview_scroll(direction, "units")
+        return "break"
+
+    def _update_line_numbers(self):
+        line_count = int(self.text.index("end-1c").split(".")[0])
+        width = max(3, len(str(line_count)))
+        numbers = "\n".join(f"{i:>{width}}" for i in range(1, line_count + 1)) or "1"
+        self.line_numbers.config(state="normal")
+        self.line_numbers.delete("1.0", tk.END)
+        self.line_numbers.insert("1.0", numbers + "\n")
+        self.line_numbers.config(state="disabled", width=max(4, width + 1))
 
     def append_output(self, text):
         self.text.insert(tk.END, text)
