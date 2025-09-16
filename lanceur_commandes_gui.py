@@ -141,6 +141,7 @@ class App(ttk.Frame):
         self.runner = PSRunner(self.append_output, self.on_process_exit)
         self.prog_running = False
         self._build_ui()
+        self._set_output_file(None)
         self._refresh_list()
         self.set_status()
 
@@ -203,6 +204,12 @@ class App(ttk.Frame):
         # Zone Sortie
         right = ttk.Frame(paned)
         ttk.Label(right, text="Sortie").pack(anchor="w")
+        self.output_toolbar = ttk.Frame(right)
+        self.output_toolbar.pack(fill="x", pady=(2,4))
+        ttk.Label(self.output_toolbar, text="Fichier:").pack(side="left")
+        self.output_file_var = tk.StringVar(value="")
+        self.output_file_label = ttk.Label(self.output_toolbar, textvariable=self.output_file_var)
+        self.output_file_label.pack(side="left", padx=(4,0))
         text_container = ttk.Frame(right)
         text_container.pack(fill="both", expand=True)
 
@@ -323,6 +330,12 @@ class App(ttk.Frame):
         # Coloration syntaxique si fichier Markdown/Quarto
         if path.suffix.lower() in {".qmd", ".md", ".markdown"}:
             self._apply_markdown_highlighting(content)
+            if path.suffix.lower() == ".qmd":
+                self._set_output_file(path)
+            else:
+                self._set_output_file(None)
+        else:
+            self._set_output_file(None)
 
         self.set_status(f"Fichier ouvert: {path}")
 
@@ -441,6 +454,13 @@ class App(ttk.Frame):
         self.line_numbers.insert("1.0", numbers + "\n")
         self.line_numbers.config(state="disabled", width=max(4, width + 1))
 
+    def _set_output_file(self, path: Path | str | None):
+        if path:
+            name = Path(path).name
+            self.output_file_var.set(name)
+        else:
+            self.output_file_var.set("—")
+
     def append_output(self, text):
         self.text.insert(tk.END, text)
         self.text.see(tk.END)
@@ -473,6 +493,7 @@ class App(ttk.Frame):
             messagebox.showinfo(APP_TITLE, "Sélectionnez une commande dans la liste.")
             return
         cmd = self.model.items[idx].command
+        self._set_output_file(None)
         self.text.delete("1.0", tk.END)
         try:
             self.runner.run(cmd, self.cwd_var.get() or None)
