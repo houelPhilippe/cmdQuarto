@@ -218,6 +218,13 @@ class App(ttk.Frame):
             state="disabled",
         )
         self.save_file_btn.pack(side="right")
+        self.close_file_btn = ttk.Button(
+            self.output_toolbar,
+            text="Fermer",
+            command=self.close_opened_output_file,
+            state="disabled",
+        )
+        self.close_file_btn.pack(side="right", padx=(4,0))
         text_container = ttk.Frame(right)
         text_container.pack(fill="both", expand=True)
 
@@ -469,10 +476,12 @@ class App(ttk.Frame):
             self._opened_file_path = resolved
             self.output_file_var.set(resolved.name)
             self.save_file_btn.config(state="normal")
+            self.close_file_btn.config(state="normal")
         else:
             self._opened_file_path = None
             self.output_file_var.set("—")
             self.save_file_btn.config(state="disabled")
+            self.close_file_btn.config(state="disabled")
 
     def append_output(self, text):
         self.text.insert(tk.END, text)
@@ -561,6 +570,17 @@ class App(ttk.Frame):
             messagebox.showerror(APP_TITLE, f"Impossible d'enregistrer le fichier: {e}")
             return
         self.set_status(f"Fichier enregistré: {self._opened_file_path}")
+
+    def close_opened_output_file(self):
+        if not self._opened_file_path:
+            messagebox.showinfo(APP_TITLE, "Aucun fichier ouvert à fermer.")
+            return
+        closed = self._opened_file_path
+        self.text.delete("1.0", tk.END)
+        self.text.edit_modified(False)
+        self._set_output_file(None)
+        self._update_line_numbers()
+        self.set_status(f"Fichier fermé: {closed}")
 
     def _selected_index(self):
         try:
