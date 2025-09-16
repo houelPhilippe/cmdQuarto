@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Lanceur de commandes PowerShell avec interface graphique (Windows 11)
+Lanceur de commandes PowerShell avec interface graphique (Windows 11) sxsxs
 - Liste de commandes prédéfinies
 - Ajout / édition / suppression de commandes
 - Exécution dans PowerShell, sortie console en direct
