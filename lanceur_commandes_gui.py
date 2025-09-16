@@ -210,21 +210,21 @@ class App(ttk.Frame):
         ttk.Label(self.output_toolbar, text="Fichier:").pack(side="left")
         self.output_file_var = tk.StringVar(value="")
         self.output_file_label = ttk.Label(self.output_toolbar, textvariable=self.output_file_var)
-        self.output_file_label.pack(side="left", padx=(4,0))
+        self.output_file_label.pack(side="left", padx=(6,12))
         self.save_file_btn = ttk.Button(
             self.output_toolbar,
-            text="Enregistrer",
+            text="💾 Enregistrer",
             command=self.save_opened_output_file,
             state="disabled",
         )
-        self.save_file_btn.pack(side="right")
+        self.save_file_btn.pack(side="right", padx=4)
         self.close_file_btn = ttk.Button(
             self.output_toolbar,
-            text="Fermer",
+            text="✖ Fermer",
             command=self.close_opened_output_file,
             state="disabled",
         )
-        self.close_file_btn.pack(side="right", padx=(4,0))
+        self.close_file_btn.pack(side="right", padx=4)
         text_container = ttk.Frame(right)
         text_container.pack(fill="both", expand=True)
 
@@ -294,6 +294,7 @@ class App(ttk.Frame):
         menubar.add_cascade(label="Fichier", menu=filemenu)
         filemenu.add_command(label="Enregistrer", command=self.save)
         filemenu.add_command(label="Enregistrer le fichier ouvert", command=self.save_opened_output_file)
+        filemenu.add_command(label="Fermer le fichier ouvert", command=self.close_opened_output_file)
         filemenu.add_command(label="Quitter", command=root.destroy)
         helpmenu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Aide", menu=helpmenu)
